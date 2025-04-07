@@ -1,0 +1,39 @@
+#!/bin/sh
+function main {
+    if [[ $(getprop sys.boot_completed) != 1 ]]; then
+        main
+    fi
+    screenstate=$(dumpsys display | grep -e "mState=" -e "mScreenState" | sed -n '2p' | tr = ' ' | awk '{print $2}')
+    if [[ $screenstate == "OFF" ]]; then
+        cmd power set-fixed-performance-mode-enabled false
+        cmd power set-mode 1
+        echo "powersave" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+        echo "powersave" > /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor
+        echo "powersave" > /sys/devices/system/cpu/cpu7/cpufreq/scaling_governor
+        pm disable-user --user 0 com.google.android.gms
+        pm clear com.android.vending
+    else
+        cmd power set-mode 0
+        focusedapp=$(dumpsys activity activities | grep topResumedActivity=ActivityRecord | tr ={/ ' ' | awk '{print $5}')
+        pm enable com.google.android.gms
+        if [[ $focusedapp != "" ]]; then
+            usage=$(cat /sys/class/kgsl/kgsl-3d0/gpu_busy_percentage | awk '{print $1}')
+            echo $usage
+            if [[ $(($usage)) > $((35)) ]]; then
+                device_config put game_overlay $focusedapp mode=2,downscaleFactor=0.5
+                echo "performance" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+                echo "performance" > /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor
+                echo "performance" > /sys/devices/system/cpu/cpu7/cpufreq/scaling_governor
+                cmd power set-fixed-performance-mode-enabled true
+            else
+                echo "schedutil" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+                echo "schedutil" > /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor
+                echo "schedutil" > /sys/devices/system/cpu/cpu7/cpufreq/scaling_governor
+                cmd power set-fixed-performance-mode-enabled false
+            fi
+        fi
+    fi
+    sleep 0.5
+    main
+}
+main
