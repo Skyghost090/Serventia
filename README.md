@@ -1,5 +1,9 @@
 # Serventia - Magisk Module
-
+![Contributors](https://img.shields.io/github/contributors/skyghost090/Serventia?style=plastic)
+![Forks](https://img.shields.io/github/forks/skyghost090/Serventia)
+![Stars](https://img.shields.io/github/stars/skyghost090/Serventia)
+![Licence](https://img.shields.io/github/license/skyghost090/Serventia)
+![Issues](https://img.shields.io/github/issues/skyghost090/Serventia)
 **Serventia** is a powerful Magisk module designed to enhance your Android device's **standby efficiency** and **gaming performance**. Whether you're trying to save battery during idle periods or get the most out of your device while gaming, Serventia has your back.
 
 ---
