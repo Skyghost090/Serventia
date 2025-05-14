@@ -1,7 +1,7 @@
 id=serventia
 name=Serventia
-version=2
-versionCode=2
+version=4
+versionCode=4
 author=Skyghost090
 description=For clear RAM open termux type 'cd /system/bin' after 'sudo bash' and type './clearam'
  
