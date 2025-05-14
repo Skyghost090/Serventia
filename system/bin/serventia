@@ -8,10 +8,6 @@ while true; do
         screenstate=$(dumpsys display | grep -e "mState=" -e "mScreenState" | sed -n '2p' | tr = ' ' | awk '{print $2}')
         if [[ $screenstate == "OFF" ]]; then
             cmd power set-fixed-performance-mode-enabled false
-            cmd power set-mode 1
-            echo "powersave" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
-            echo "powersave" > /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor
-            echo "powersave" > /sys/devices/system/cpu/cpu7/cpufreq/scaling_governor
             pm disable-user --user 0 com.google.android.gms
             pm clear com.android.vending
         else
