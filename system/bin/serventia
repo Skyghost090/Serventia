@@ -17,7 +17,7 @@ while true; do
             if [[ $focusedapp != "" ]]; then
                 usage=$(cat /sys/class/kgsl/kgsl-3d0/gpu_busy_percentage | awk '{print $1}')
                 echo $usage
-                if [[ $(($usage)) > $((35)) ]]; then
+                if [[ $(($usage)) > $((50)) ]]; then
                     device_config put game_overlay $focusedapp mode=2,downscaleFactor=0.5
                     echo "performance" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
                     echo "performance" > /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor
